@@ -12,7 +12,7 @@ A lightweight enhancer for Webflow’s native slider that groups Collection item
 ## Setup
 1. Include the script just before the closing `</body>` tag:
    ```html
-   <script src="https://cdn.jsdelivr.net/gh/crystalthedeveloper/webflow-cms-multi-item-slider@v1.0.0/cms-multi-item-slider.js" defer></script>
+   <script src="https://cdn.jsdelivr.net/gh/crystalthedeveloper/webflow-cms-multi-item-slider@latest/cms-multi-item-slider.js" defer></script>
    ```
 2. In Webflow Designer configure your slider elements:
    - Slider wrapper → `data-cltd-slider="cms"`
