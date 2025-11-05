@@ -21,11 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🔍 Find slide group
     const findGroupElement = element => {
       if (!element) return null;
-      return element.querySelector('[data-cltd-slide-group]') ||
+      return (
+        element.querySelector('[data-cltd-slide-group]') ||
         element.querySelector('.cltd-slide-group') ||
         element.querySelector('.w-dyn-items') ||
         element.firstElementChild ||
-        element;
+        element
+      );
     };
 
     // ✅ Responsive rule: use 1 item on mobile
@@ -148,10 +150,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const group = document.createElement('div');
         baseGroupClasses.forEach(cls => group.classList.add(cls));
 
+        // ✅ ADD ARIA ROLES for accessibility
+        group.setAttribute('role', 'list');
+        group.setAttribute('aria-label', `Slide group ${groupIndex}`);
+
         const itemsForGroup = itemEls.slice(i, i + itemsPerSlide);
         applyGroupLayout(group, itemsPerSlide, itemsForGroup.length);
         group.classList.add(`cltd-slide-group-${groupIndex}`);
-        itemsForGroup.forEach(el => group.appendChild(el));
+
+        itemsForGroup.forEach(el => {
+          el.setAttribute('role', 'listitem'); // ✅ re-apply role
+          group.appendChild(el);
+        });
 
         slide.appendChild(group);
         fragment.appendChild(slide);
@@ -169,6 +179,14 @@ document.addEventListener("DOMContentLoaded", () => {
           el.style.display = originalDisplay || '';
           el.removeAttribute('data-cltd-slider-hidden');
         }
+      });
+
+      // ✅ Restore ARIA on the slider itself
+      slider.setAttribute('role', 'region');
+      slider.setAttribute('aria-label', 'CMS Slider');
+      sliderMask.querySelectorAll('.w-slide').forEach((slide, i) => {
+        slide.setAttribute('role', 'group');
+        slide.setAttribute('aria-label', `Slide ${i + 1}`);
       });
 
       if (window.Webflow?.require) {
